@@ -1,18 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <import type="org.nasa_apod.vo.Status" />
+
+        <import type="org.nasa_apod.vo.Resource" />
+
+        <variable
+            name="query"
+            type="String" />
+
+        <variable
+            name="searchResource"
+            type="Resource" />
+
+        <variable
+            name="image"
+            type="String" />
+
+        <variable
+            name="callback"
+            type="org.nasa_apod.common.RetryCallback" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            app:visibleGone="@{searchResource.status == Status.SUCCESS}"
+            android:layout_height="match_parent">
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:orientation="vertical">
+               <org.nasa_apod.utils.SquareImageView
+                   android:id="@+id/imageView"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:adjustViewBounds="false"
+                   android:cropToPadding="false"
+                   app:imageUrl="@{image}"
+                   android:scaleType="centerCrop"/>
+           </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <include
+            layout="@layout/loading_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:callback="@{() -> callback.retry()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:resource="@{searchResource}" />
+    </LinearLayout>
+</layout>
