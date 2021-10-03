@@ -36,6 +36,9 @@ class FavListActivity : AppCompatActivity() {
         binding = dataBinding
         setContentView(dataBinding.root)
         initRecyclerView()
+        binding.back.setOnClickListener {
+            finish()
+        }
     }
 
     private fun initRecyclerView() {

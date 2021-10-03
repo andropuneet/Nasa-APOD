@@ -9,10 +9,14 @@ import org.nasa_apod.utils.AbsentLiveData
 import org.nasa_apod.vo.Image
 import org.nasa_apod.vo.Resource
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(var repository: ImageRepository) : ViewModel() {
     val date = MutableLiveData<String>()
+    val dateCalendar: Calendar = Calendar.getInstance()
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     val data: LiveData<Resource<Image>> = Transformations.switchMap(date) { input: String ->
         if (input.isEmpty()) {
             return@switchMap AbsentLiveData.create<Resource<Image>>()

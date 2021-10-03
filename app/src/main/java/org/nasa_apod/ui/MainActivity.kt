@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var networkMonitor: NetworkMonitor
     lateinit var mainViewModel: MainViewModel
     lateinit var binding: ActivityMainBinding
-    private val dateCalendar: Calendar = Calendar.getInstance()
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,12 +50,12 @@ class MainActivity : AppCompatActivity() {
 
         binding = dataBinding
         setContentView(dataBinding.root)
-        mainViewModel.date.value = dateFormat.format(dateCalendar.time)
+        mainViewModel.date.value = dateFormat.format(mainViewModel.dateCalendar.time)
         val date = OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-            dateCalendar.set(Calendar.YEAR, year)
-            dateCalendar.set(Calendar.MONTH, monthOfYear)
-            dateCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            mainViewModel.date.value = dateFormat.format(dateCalendar.time)
+            mainViewModel.dateCalendar.set(Calendar.YEAR, year)
+            mainViewModel.dateCalendar.set(Calendar.MONTH, monthOfYear)
+            mainViewModel.dateCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            mainViewModel.date.value = dateFormat.format(mainViewModel.dateCalendar.time)
         }
         mainViewModel.data.observe(this, Observer {
             binding.searchResource = it
@@ -89,9 +88,9 @@ class MainActivity : AppCompatActivity() {
         }
         binding.calendar.setOnClickListener {
             var dialog = DatePickerDialog(
-                this, date, dateCalendar
-                    .get(Calendar.YEAR), dateCalendar.get(Calendar.MONTH),
-                dateCalendar.get(Calendar.DAY_OF_MONTH)
+                this, date, mainViewModel.dateCalendar
+                    .get(Calendar.YEAR), mainViewModel.dateCalendar.get(Calendar.MONTH),
+                mainViewModel.dateCalendar.get(Calendar.DAY_OF_MONTH)
             )
             dialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
             dialog.show()
