@@ -8,7 +8,7 @@ import retrofit2.http.Query
 interface ApiInterface {
     @GET("/planetary/apod")
     fun getImgResponse(
-        @Query("key") key: String,
+        @Query("api_key") key: String,
         @Query("date") date: String
     ): LiveData<ApiResponse<Image>>
 }

@@ -1,6 +1,7 @@
 package org.nasa_apod.db
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -13,6 +14,6 @@ abstract class ImageDao {
     abstract fun insert(image: Image)
     @Query("SELECT * FROM Image WHERE date = :date")
     abstract fun findByDate(date: String): LiveData<Image>
-    @Query("SELECT * FROM Image")
+    @Query("SELECT * FROM Image WHERE markFav = 1")
     abstract fun findByFav(): LiveData<List<Image>>
 }

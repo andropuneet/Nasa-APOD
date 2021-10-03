@@ -46,7 +46,7 @@ object AppInjector {
 
     private fun handleActivity(activity: Activity) {
         AndroidInjection.inject(activity)
-        //        if (activity instanceof FragmentActivity) {
+        //  if (activity instanceof FragmentActivity) {
 //            ((FragmentActivity) activity).getSupportFragmentManager()
 //                    .registerFragmentLifecycleCallbacks(
 //                            new FragmentManager.FragmentLifecycleCallbacks() {

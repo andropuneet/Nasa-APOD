@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
+import org.nasa_apod.viewmodel.FavListViewModel
 import org.nasa_apod.viewmodel.MainViewModel
 import org.nasa_apod.viewmodel.MainViewModelFactory
 
@@ -14,6 +15,10 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MainViewModel::class)
     abstract fun bindViewModel(mainViewModel: MainViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(FavListViewModel::class)
+    abstract fun bindFavListViewModel(favListViewModel: FavListViewModel): ViewModel
     @Binds
     abstract fun bindViewModelFactory(factory: MainViewModelFactory): ViewModelProvider.Factory
 }

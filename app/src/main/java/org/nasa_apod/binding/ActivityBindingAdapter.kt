@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide
 import javax.inject.Inject
 
 class ActivityBindingAdapter @Inject constructor(val context: Context) {
-    @BindingAdapter("imassgeUrl")
+    @BindingAdapter("imagxeUrl")
     fun bindImage(imageView: ImageView, url: String?) {
         Glide.with(context).load(url).into(imageView)
     }

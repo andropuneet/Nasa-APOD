@@ -17,9 +17,14 @@ package org.nasa_apod.binding
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestBuilder
+import org.nasa_apod.R
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 /**
@@ -35,6 +40,38 @@ object BindingAdapters {
     @BindingAdapter("imageUrl")
     fun bindImage(imageView: ImageView, url: String?) {
         Timber.d(url)
-        Glide.with(imageView.context).load(url).into(imageView)
+        if(url!=null) {
+            if (url.contains("youtube")) {
+                Glide.with(imageView.context).load(url).placeholder(R.drawable.video_image)
+                    .into(imageView)
+            } else {
+                Glide.with(imageView.context).load(url).placeholder(R.drawable.image_placeholder)
+                    .into(imageView)
+            }
+        }else{
+            Glide.with(imageView.context).load("").placeholder(R.drawable.image_placeholder)
+                .into(imageView)
+        }
+    }
+    @JvmStatic
+    @BindingAdapter("dateFormat")
+    fun bindDateFormat(textView: TextView, date: String?) {
+        var list : List<String>? = date?.split("-")
+        var dateFormat = SimpleDateFormat("dd MMM, yyyy",Locale.US)
+        var calendar = Calendar.getInstance()
+        if(list!=null) {
+            calendar.set(list[0].toInt(), list[1].toInt()-1, list[2].toInt())
+            var date: Date = calendar.time
+            textView.text = dateFormat.format(date).toString()
+        }
+    }
+    @JvmStatic
+    @BindingAdapter("markFav")
+    fun bindMarkFav(imageView: ImageView, isFav: Boolean) {
+        if(isFav){
+            Glide.with(imageView.context).load(R.drawable.fav_selected).into(imageView)
+        }else{
+            Glide.with(imageView.context).load(R.drawable.fav_border).into(imageView)
+        }
     }
 }

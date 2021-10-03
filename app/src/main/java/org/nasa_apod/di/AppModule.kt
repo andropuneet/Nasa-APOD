@@ -59,9 +59,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        cache: Cache,
-        application: Application,
-        networkMonitor: NetworkMonitor
+        cache: Cache
     ): OkHttpClient.Builder {
         val logging = HttpLoggingInterceptor()
         logging.setLevel(if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BASIC else HttpLoggingInterceptor.Level.NONE)

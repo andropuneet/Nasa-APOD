@@ -19,8 +19,8 @@
     </data>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/default_margin">
@@ -45,6 +45,7 @@
             android:id="@+id/error_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAlignment="center"
             android:text="@{resource.message ?? @string/unknown_error}"
             app:visibleGone="@{resource.status == Status.ERROR}" />
     </LinearLayout>

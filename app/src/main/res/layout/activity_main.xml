@@ -10,59 +10,148 @@
         <import type="org.nasa_apod.vo.Resource" />
 
         <variable
-            name="query"
-            type="String" />
-
-        <variable
             name="searchResource"
             type="Resource" />
 
         <variable
-            name="image"
-            type="String" />
+            name="imageInfo"
+            type="org.nasa_apod.vo.Image" />
 
         <variable
             name="callback"
             type="org.nasa_apod.common.RetryCallback" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="15dp">
-
-        <androidx.cardview.widget.CardView
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/header"
+            android:background="@color/design_default_color_primary"
             android:layout_width="match_parent"
-            app:visibleGone="@{searchResource.status == Status.SUCCESS}"
-            android:layout_height="match_parent">
+            android:padding="15dp"
+            android:layout_height="@dimen/header_size">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:text="APOD"/>
+
            <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:orientation="vertical">
-               <org.nasa_apod.utils.SquareImageView
-                   android:id="@+id/imageView"
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:adjustViewBounds="false"
-                   android:cropToPadding="false"
-                   app:imageUrl="@{image}"
-                   android:scaleType="centerCrop"/>
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:gravity="center_vertical"
+               android:layout_alignParentEnd="true"
+               android:orientation="horizontal">
+               <ImageView
+                   android:id="@+id/fav"
+                   android:layout_width="30dp"
+                   android:layout_height="25dp"
+                   android:layout_gravity="end"
+                   android:background="@drawable/fav_unselected"/>
+
+               <View
+                   android:layout_width="10dp"
+                   android:layout_height="10dp"/>
+
+               <ImageView
+                   android:id="@+id/calendar"
+                   android:layout_width="25dp"
+                   android:layout_height="25dp"
+                   android:background="@drawable/calendar"/>
            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_below="@+id/header"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="vertical">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    app:cardCornerRadius="5dp"
+                    app:cardPreventCornerOverlap="true"
+                    app:visibleGone="@{searchResource.status == Status.SUCCESS}"
+                    android:layout_height="wrap_content">
+
+                   <RelativeLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent">
+                       <org.nasa_apod.utils.SquareImageView
+                           android:id="@+id/imageView"
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:adjustViewBounds="false"
+                           android:cropToPadding="false"
+                           app:imageUrl="@{imageInfo.url}"
+                           android:scaleType="centerCrop"/>
+                   </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="5dp"
+                    app:visibleGone="@{searchResource.status == Status.SUCCESS}"
+                    android:gravity="center_vertical"
+                    android:paddingRight="5dp"
+                    android:weightSum="5">
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:layout_weight="4"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:text="@{imageInfo.title}"/>
+
+                    <ImageView
+                        android:id="@+id/mark_fav"
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        app:markFav="@{imageInfo.markFav}"/>
+
+                    <TextView
+                        android:id="@+id/date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:textAlignment="center"
+                        android:textSize="12sp"
+                        android:textStyle="normal"
+                        app:dateFormat="@{imageInfo.date}"/>
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/shadedblack"
+                    android:textSize="15sp"
+                    android:textStyle="normal"
+                    android:text="@{imageInfo.explanation}"/>
+            </LinearLayout>
+        </ScrollView>
 
         <include
+            android:id="@+id/loading"
             layout="@layout/loading_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/header"
             app:callback="@{() -> callback.retry()}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="match_parent"
             app:resource="@{searchResource}" />
-    </LinearLayout>
+    </RelativeLayout>
+
 </layout>

@@ -26,7 +26,9 @@ public class Image {
     public final String title;
     @Json(name = "url")
     public final String url;
-    public Image(String explanation, String copyright, @NotNull String date, String hdurl, String media_type, String service_version, String title, String url) {
+    public boolean markFav;
+
+    public Image(String explanation, String copyright, @NotNull String date, String hdurl, String media_type, String service_version, String title, String url,Boolean markFav) {
         this.copyright = copyright;
         this.date = date;
         this.hdurl = hdurl;
@@ -35,6 +37,7 @@ public class Image {
         this.service_version = service_version;
         this.title = title;
         this.url = url;
+        this.markFav = markFav;
     }
 
 }
